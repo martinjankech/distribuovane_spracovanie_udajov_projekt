@@ -1,0 +1,59 @@
+Deadline - 28.novembra. 2021 o 6 večer
+
+Ukladanie udajov o filmoch  (SK)
+
+Pridat , Editovat, Vymazat 
+
+Udaje - Tabulka Filmy  
+-----------------------
+Hlavne udaje 
+-----------------------
+1. Id -> Id 
+2. Nazov -> Name_Movie
+3. Meno_Rezisera -> Name_Director
+4. Hlavny_Herec -> Main_Actor
+5. Hodnotenie_Imdb -> Rating_Imdb
+6. Pridal_Uzivatel -> Added_By_User 
+7. Uzol -> Node 
+8. Kedy_Vytvoreny -> When_Created  
+9. Kedy_Modifikovany -> When_Modify
+10. Status   
+-----------------------
+
+Vedlajsie uloha ohladom udajov ( Ak by bol na to cas a chut )
+-----------------------
+Zobrazovanie obrazkov s udajmi v kartach 
+nie len prostrednictom tabulky ale krajsie prevedenie udajov 
+
+Udaje - Tabulka Uzivatel -> Registracie + prihlasenie bude v tej tabulke 
+------------------------- 
+Id 
+Meno -> vypisanie na stranke "Ahoj $meno pracujes na uzle: ip-uzla "
+----------------
+Prihlasenie sa cez email a heslo + hash na heslo 
+Heslo
+email 
+---------------------------------------------------------------------
+Login
+
+Registracia -> prihlasovanie ->  alebo potom prihlasovanie ->  a potom zobrazenie databazy 
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

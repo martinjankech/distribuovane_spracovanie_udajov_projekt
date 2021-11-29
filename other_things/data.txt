@@ -1,0 +1,32 @@
+
+userAction.php
+----------------------
+1.  Nazov filmu
+userData -> movieData
+$name -> $name_movie
+----------------------
+2. Nazov Rezisera 
+name_director 
+----------------------
+3. Nazov Herca 
+main_actor
+----------------------
+4. Rating Imdb 
+----------------------
+5.  Added by User
+----------------------
+6.  Node
+
+-------------------------------------
+Ajax
+function getUsers => getMovies ;
+userAction -> movieAction; 
+userData -> movieData;
+function editUser -> editMovie
+
+
+
+-------------------------------------
+Index 
+userSubmit -> movieSubmit
+

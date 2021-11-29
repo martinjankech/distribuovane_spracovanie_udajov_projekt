@@ -1,0 +1,9 @@
+1. Zabespecit sychronizaciu user 
+    
+---------------------------------
+2. Pridanie input user  
+---------------------------------
+3. register aby bol modalny - hotovo 
+---------------------------------
+4. Vyhladanie zlepsit 
+---------------------------------
