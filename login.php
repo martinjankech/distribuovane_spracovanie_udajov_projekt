@@ -4,7 +4,8 @@
     require '_inc/add-login.php';
     require '_inc/add-register.php';
 
-    
+    $config=new config;
+    $config->connect();
 
     
 ?>
@@ -56,6 +57,25 @@ echo '<div class="alert alert-danger" role="alert">
 echo '<div class="alert alert-danger" role="alert">
 "Zadajte Heslo."
     </div>';
+    if( !empty( $config->getNotaviableconnection() )){
+
+        foreach( $config->getNotaviableconnection() as $value ){
+
+            echo '<div class="alert alert-danger" role="alert">
+                uzol '.$value.' je odpojený !
+                </div>';
+
+        }
+    }
+    $updateip = $config->synchronize();
+
+    if( !empty( $updateip )){ 
+        foreach( $updateip as $value ){
+            echo '<div class="alert alert-success" role="alert">
+            uzol '.$value.' bol synchronizovany s ostatnymi uzlami ! </div>';
+        }
+    }
+
     ?>
 
 <div class="container">

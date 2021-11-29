@@ -100,7 +100,7 @@ require_once '_inc/config.php'
                      if (!empty ($config->getNotaviableconnection()) && in_array($row['Node'], $config->getNotaviableconnection())){
                         
                          ?>
-                            <a href="javascript:void(0);" class="btn btn-primary"  rowID="<?php echo $row['Id']; ?>" data-type="edit" data-toggle="modal" data-target="#modalUserAddEdit" >Upraviť</a>
+                            <a href="javascript:void(0);" class="btn btn-primary disabled"  rowID="<?php echo $row['Id']; ?>" data-type="edit" data-toggle="modal" data-target="#modalUserAddEdit" >Upraviť</a>
                             <a href="javascript:void(0);" class="btn btn-outline-danger disabled" onclick="return confirm('Are you sure to delete data?')?movieAction('delete', '<?php echo $row['Id']; ?>'):false;">Odstraniť</a>
                         </td>
                         <?php
