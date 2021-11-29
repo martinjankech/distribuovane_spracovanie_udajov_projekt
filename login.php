@@ -5,10 +5,18 @@
     require '_inc/add-register.php';
 
     
+
     
-
-
 ?>
+<script>
+    $("#register").data('bs.modal')._config.backdrop = 'static'; 
+</script>
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-dark ">
 
     <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#login">
@@ -20,6 +28,35 @@
     </button>
 
 </nav>
+<?php 
+if(( !empty( $username_err )) )
+echo '<div class="alert alert-danger" role="alert">
+Toto uživateľské meno je už obsadené.
+    </div>';
+   
+    if(( !empty( $password_err )) )
+echo '<div class="alert alert-danger" role="alert">
+Heslo musí mať aspoň 6 znakov.
+    </div>';
+
+    if(( !empty( $confirm_password_err )) )
+echo '<div class="alert alert-danger" role="alert">
+Heslo sa nezhoduje.
+    </div>';
+
+    if(( !empty( $login_err)) )
+echo '<div class="alert alert-danger" role="alert">
+"Nesprávne uživateľské meno alebo heslo."
+    </div>';
+    if(( !empty( $username_err_log)) )
+echo '<div class="alert alert-danger" role="alert">
+"Zadajte použivateľské meno."
+    </div>';
+    if(( !empty( $password_err_log)) )
+echo '<div class="alert alert-danger" role="alert">
+"Zadajte Heslo."
+    </div>';
+    ?>
 
 <div class="container">
     <h1 class="font-monospace mt-4 mb-3 text-primary">Projekt DSD</h1>
@@ -88,19 +125,19 @@
                     <div class="form-group">
                         <p>Ak sa chcete prihlásiť vyplnte tento formulár.</p>
                         <label>Použivateľské meno</label>
-                        <input type="text" name="username"
-                            class="form-control <?php echo ( !empty( $username_err )) ? 'is-invalid' : ''; ?>"
-                            value="<?php echo $username; ?>">
-                        <span class="invalid-feedback"><?php echo $username_err; ?></span>
+                        <input type="text" name="username_log"
+                            class="form-control <?php echo ( !empty( $username_err_log )) ? 'is-invalid' : ''; ?>"
+                            value="<?php echo $username_log; ?>">
+                        <span class="invalid-feedback"><?php echo $username_err_log; ?></span>
                     </div>
                     <div class="form-group">
                         <label>Heslo</label>
-                        <input type="password" name="password"
-                            class="form-control <?php echo ( !empty( $password_err )) ? 'is-invalid' : ''; ?>">
-                        <span class="invalid-feedback"><?php echo $password_err; ?></span>
+                        <input type="password" name="password_log"
+                            class="form-control <?php echo ( !empty( $password_err_log )) ? 'is-invalid' : ''; ?>">
+                        <span class="invalid-feedback"><?php echo $password_err_log; ?></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="Prihlásiť sa">
+                        <input  type="submit" name="submit_log" class="btn btn-primary" value="Prihlásiť sa">
                     </div>
                     <p>Nemáte účet ? <a href="register.php">Zaregistrujte sa teraz</a>.</p>
                 </form>
@@ -110,8 +147,8 @@
 </div>
 
 <!-- Modal register -->
-<div class="modal fade float-right" id="register" tabindex="-1" role="dialog" aria-labelledby="registerLabel"
-    aria-hidden="true">
+<div class="modal fade float-right" id="register" tabindex="-1" role="dialog" aria-labelledby="registerLabel"  
+    aria-hidden="true" data-backdrop="static" data-keyboard="false" >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <!-- Modal head -->
@@ -146,18 +183,24 @@
                         <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="Registrovat sa ">
+                        <!-- <input type="submit" class="btn btn-primary" value="Registrovat sa "> -->
+                        <button type="submit"  name="submit_reg" class="btn btn-success" >Registrovať</button>
                         <input type="reset" class="btn btn-secondary ml-2" value="Resetovať">
                     </div>
                     <p>Úspešne ste vytvorili účet ?<a href="login.php"> Prihláste sa tu.</a></p>
                 </form>
+
             </div>
         </div>
     </div>
 </div>
 
-
-
+<!-- <script src="./assets/js//script.js"></script> -->
+<!-- <script>
+     function openpopup() {
+            $("#register").modal('show');
+        }
+</script> -->
 
 </body>
 

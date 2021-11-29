@@ -92,3 +92,8 @@ $(function() {
       $( this ).find( '.statusMsg' ).html( '' );
   });
 });
+
+$("#register").submit(function(event){    
+     event.preventDefault(); //prevent default action 
+    
+})

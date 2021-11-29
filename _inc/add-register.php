@@ -1,5 +1,8 @@
 <?php
 /* Vlozenie config */
+
+use function PHPSTORM_META\type;
+
 require_once "./classes/DB.class.php";
 require_once "_inc/config.php";
 $db=new DB;
@@ -13,10 +16,12 @@ $username_err = $password_err = $confirm_password_err = "";
 
 /*Spracovanie udajov z formulara pri odoslani */
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){ // $_Server -> Informacie o servery REQUEST_METHOD-> ktora metoda bola pouzita v nasom pripade metoda POST 
+//if($_SERVER["REQUEST_METHOD"] == "POST"){ // $_Server -> Informacie o servery REQUEST_METHOD-> ktora metoda bola pouzita v nasom pripade metoda POST 
+    if(isset($_POST[ "submit_reg" ]) ){
  
     /* Overenie pouzivatelskeho mena  */
-
+   
+       
     if( empty( trim( $_POST["username"] ))){ // trim()-> Odstrani medzeri (alebo ine znaky) zo zaciatku a konca daneho retazca
         $username_err = "Zadajte používateľské meno.";
     } elseif( !preg_match( '/^[a-zA-Z0-9_]+$/', trim( $_POST["username"] ))){ // preg_match()-> Vykona zhodu regularneho vyrazu 
@@ -68,13 +73,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){ // $_Server -> Informacie o servery RE
         $confirm_password_err = "Prosím potvrdte heslo.";     
     } else{
         $confirm_password = trim( $_POST[ "confirm_password" ]);
+       
         if( empty( $password_err ) && ( $password != $confirm_password )){
             $confirm_password_err = "Heslo sa nezhoduje.";
         }
     }
     
+    
     /* Kontrola vstupnych chyb*/
-    if( empty( $username_err ) && empty( $password_err ) or empty( $confirm_password_err )){
+    if( empty( $username_err ) && empty( $password_err ) && empty( $confirm_password_err )){
         $username=$_POST['username']; 
         $password=$_POST['password']; 
 
@@ -132,6 +139,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){ // $_Server -> Informacie o servery RE
     // }
     
     /* Zatvorenie spojenia */
-    mysqli_close( $config->getLink());
+    //mysqli_close( $config->getLink());
 }
+
+
 ?>

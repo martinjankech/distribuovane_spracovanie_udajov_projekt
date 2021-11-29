@@ -17,49 +17,55 @@ $config=new config;
 $config->connect();
  
 /* Definovanie premmenych */
-$username = $password = "";
-$username_err = $password_err = $login_err = "";
+$username_log = $password_log = "";
+$username_err_log = $password_err_log = $login_err_log = "";
+//echo $_POST['submit_log'];
  
 /* Spracovanie údajov formulára pri odoslaní formulára */
-if( $_SERVER[ "REQUEST_METHOD" ] == "POST"){
- 
+//if( $_SERVER[ "REQUEST_METHOD" ] == "POST"){
+ if(!empty($_POST[ "submit_log" ]) ){
     /* Kontrola ci pouzivatelske meno je prazdne  */
-    if( empty( trim( $_POST[ "username" ]))){
-        $username_err = "Zadajte použivateľské meno.";
+    if( empty( trim( $_POST[ "username_log" ]))){
+        $username_err_log = "Zadajte použivateľské meno.";
     } else{
-        $username = trim( $_POST[ "username" ]);
+        $username_log = trim( $_POST[ "username_log" ]);
     }
-    
+
+
     /* Kontrola pouzivatelskéh hesla */
-    if( empty( trim( $_POST[ "password" ]))){
-        $password_err = "Prosím vložte heslo.";
+    if( empty( trim( $_POST[ "password_log" ]))){
+        $password_err_log = "Prosím vložte heslo.";
     } else{
-        $password = trim( $_POST[ "password" ]);
+        $password_log = trim( $_POST[ "password_log" ]);
     }
+
     
     /* Overenie  */
-    if( empty( $username_err ) && empty( $password_err )){
+    if( empty( $username_err_log ) && empty( $password_err_log )){
         
         $sql = "SELECT id, username, password FROM users WHERE username = ?";
         
+     
         if( $stmt = mysqli_prepare( $config->getLink(), $sql )){
             /* Naviazať premenné na pripravený príkaz ako parametre */
             mysqli_stmt_bind_param( $stmt, "s", $param_username );
             
            /* Nastavit parametre */
-            $param_username = $username;
-            
+            $param_username = $username_log;
+          
            /* Pokus o pripravu na vykonanie pripraveneho prikazu  */
             if( mysqli_stmt_execute( $stmt )){
                /* Ulozenie vysledku */
+               
                 mysqli_stmt_store_result( $stmt );
+        
                 
                 /* Skontroluje, ci existuje pouzivatelske meno ak ano , overenie */
                 if( mysqli_stmt_num_rows( $stmt ) == 1){                    
                     /* Zviazanie do vysledkov */
                     mysqli_stmt_bind_result( $stmt, $id, $username, $hashed_password );
                     if( mysqli_stmt_fetch( $stmt )){
-                        if( password_verify( $password, $hashed_password)){
+                        if( password_verify( $password_log, $hashed_password)){
                             /* Ak je heslo spravne zacne session */
                             session_start();
                             
@@ -80,7 +86,7 @@ if( $_SERVER[ "REQUEST_METHOD" ] == "POST"){
                     $login_err = "Nesprávne uživateľské meno alebo heslo.";
                 }
             } else{
-                echo "Oops! Niečo sa pokazilo, skúste to neskôr pri registry.";
+                echo "Oops! Niečo sa pokazilo, skúste to neskôr pri logine.";
             }
 
             /* Zatvorenie daneho vyhlasenia */
@@ -89,9 +95,11 @@ if( $_SERVER[ "REQUEST_METHOD" ] == "POST"){
     }
     
     /* Zatvorenie prihlasenia */
-     mysqli_close( $config->getLink() );
+    // mysqli_close( $config->getLink() );
 }
 
+//}
 
+//}
 
 ?>
