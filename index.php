@@ -5,9 +5,6 @@ require_once '_inc/config.php'
 
 
 <?php
-
-
-
         /* Include and initialize DB class */
         require_once 'classes/DB.class.php';
         require_once './_inc/config.php';
@@ -19,10 +16,6 @@ require_once '_inc/config.php'
             header("location: login.php");
             exit;
         }
-        
-        
-        
-        
          $db = new DB(); // $_SESSION -> Asociatívne pole obsahujúce premenné relácie dostupné pre aktuálny skript
         //$db->connect();
 
@@ -60,6 +53,17 @@ require_once '_inc/config.php'
                 v
                 našej databáze na filmy.
             </h1>
+            <div class="col-md-3 mt-4 mb-2" >
+                        <div class=" "  >
+                            <div class="input-group">
+                            <span class="input-group-append">
+                                    <div class="input-group-text bg-transparent"><i class="fa fa-search"></i></div>
+                                </span>
+                                <input class="form-control " type="search" value="search" id="my-input" onkeyup="search()">
+                                
+                            </div>
+                        </div>
+                    </div>
             <!-- Add link -->
             <div class="float-right">
                 <a href="javascript:void(0);" class="btn btn-success mb-2" data-type="add" data-toggle="modal"
@@ -72,7 +76,7 @@ require_once '_inc/config.php'
         </div>
         <div class="statusMsg"></div>
         <!-- List the users -->
-        <table class="table table-striped table-dark">
+        <table id="my-table" class="table table-striped table-dark">
             <thead class="thead-light">
                 <tr>
                     <th>Id</th>
@@ -177,6 +181,27 @@ require_once '_inc/config.php'
         </div>
     </div>
 </div>
+<script>function search() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("my-input");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("my-table");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}</script>
 
 <script src="assets/js/script.js"></script>
 
