@@ -12,12 +12,12 @@
                     }
                     else
                     { 
-                        throw new Exception( 'Unable to connect to noid '. $servername ); // Exception() -> je základná trieda pre všetky používateľské výnimky.
+                        throw new Exception( 'Neda sa pripojit na uzol '. $servername ); // Exception() -> je základná trieda pre všetky používateľské výnimky.
                     }
             }
         catch( Exception $e )
         {
-            //echo $e->getMessage();
+         
             return $servername;
         }
     }

@@ -11,13 +11,13 @@ require_once '_inc/config.php'
         $config=new config;
         $config->connect();
         session_start(); // session_start() -> vytvorí reláciu alebo obnoví aktuálnu na základe identifikátora relácie odovzdaného prostredníctvom požiadavky GET alebo POST alebo odovzdaného prostredníctvom súboru cookie.
-        
+        // zabranenie vstupu neopravnen7m uzivatelom
         if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             header("location: login.php");
             exit;
         }
-         $db = new DB(); // $_SESSION -> Asociatívne pole obsahujúce premenné relácie dostupné pre aktuálny skript
-        //$db->connect();
+         $db = new DB; 
+        
 
         if( !empty( $config->getNotaviableconnection() )){
 
@@ -70,8 +70,7 @@ require_once '_inc/config.php'
                     data-target="#modalUserAddEdit"><i class="plus"></i> Pridat Film</a>
                 <a href="logout.php" class="btn  btn-outline-info mb-2"
                     onclick="return confirm('Naozaj sa chcete odhlásiť ?')">Odhlásiť sa z učtu</a>
-                <!-- <a href="javascript:void(1);" class="btn btn-success m-2" data-type="register" data-toggle="modal"
-                    data-target="#register"><i class="plus"></i> Register</a> -->
+             
             </div>
         </div>
         <div class="statusMsg"></div>
@@ -98,20 +97,20 @@ require_once '_inc/config.php'
                     <td><?php echo $row['Main_Actor']; ?></td>
                     <td><?php echo $row['Rating_Imdb']; ?></td>
                     <td><?php echo $row['Added_By_User']; ?></td>
-                    <td><?php echo $row['Node']; ?></td>
+                    <td><?php echo $row['Node_Created']; ?></td>
                     <td>
                     <?php
-                     if (!empty ($config->getNotaviableconnection()) && in_array($row['Node'], $config->getNotaviableconnection())){
+                     if (!empty ($config->getNotaviableconnection()) && in_array($row['Node_Created'], $config->getNotaviableconnection())){
                         
                          ?>
                             <a href="javascript:void(0);" class="btn btn-primary disabled"  rowID="<?php echo $row['Id']; ?>" data-type="edit" data-toggle="modal" data-target="#modalUserAddEdit" >Upraviť</a>
-                            <a href="javascript:void(0);" class="btn btn-outline-danger disabled" onclick="return confirm('Are you sure to delete data?')?movieAction('delete', '<?php echo $row['Id']; ?>'):false;">Odstraniť</a>
+                            <a href="javascript:void(0);" class="btn btn-outline-danger disabled" onclick="return confirm('Naozaj chcete odstrániť data ?')?movieAction('delete', '<?php echo $row['Id']; ?>'):false;">Odstraniť</a>
                         </td>
                         <?php
                          }
                          else{?>
                             <a href="javascript:void(0);" class="btn btn-primary "  rowID="<?php echo $row['Id']; ?>" data-type="edit" data-toggle="modal" data-target="#modalUserAddEdit" >Upraviť</a>
-                            <a href="javascript:void(0);" class="btn btn-outline-danger" onclick="return confirm('Are you sure to delete data?')?movieAction('delete', '<?php echo $row['Id']; ?>'):false;">Odstraniť</a>
+                            <a href="javascript:void(0);" class="btn btn-outline-danger" onclick="return confirm('Naozaj chcete odstrániť data ?')?movieAction('delete', '<?php echo $row['Id']; ?>'):false;">Odstraniť</a>
                             </td>
                             <?php
 
@@ -121,7 +120,7 @@ require_once '_inc/config.php'
                         ?>
                 </tr>
                 <?php } }else{ ?>
-                <tr><td colspan="5">No user(s) found...</td></tr>
+                <tr><td colspan="5">Žiadny záznam</td></tr>
                 <?php } ?>
             </tbody>
         </table>
@@ -165,10 +164,7 @@ require_once '_inc/config.php'
                             placeholder="Vložte rating filmu podľa imdb.">
                     </div>
                     
-                    <!-- <div class="form-group">
-                        <label for="Node">Uzol</label>
-                        <input type="text" class="form-control" name="Node" id="Node" placeholder="Vložte uzol.">
-                    </div> -->
+
                     <input type="hidden" class="form-control" name="Id" id="Id" />
                 </form>
             </div>

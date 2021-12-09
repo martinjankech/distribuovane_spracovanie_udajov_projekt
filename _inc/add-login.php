@@ -3,14 +3,6 @@
 
 session_start(); // session_start() -> vytvorí reláciu alebo obnoví aktuálnu na základe identifikátora relácie odovzdaného prostredníctvom požiadavky Get alebo Post v nasom priprade POST 
 
-/* Kontrola, ci je pouzivatel prihlaseny ak ano presmeruje ho do DB -> index.php */
-// if( isset( $_SESSION[ "loggedin" ]) && $_SESSION[ "loggedin" ] === true){
-//     header( "location: index.php" ); // header()-> sa pouziva na odoslanie hlavicky http v nasom pripade na lacation index.php
-//     exit;
-// }
-// $halohalo=($_POST["username"]);
-// var_dump($halohalo);
-
 /* Vlozenie config.php */
 require_once "_inc/config.php";
 $config=new config;

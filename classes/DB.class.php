@@ -1,4 +1,5 @@
 <?php
+// Vypisovanie chyb
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(1);
@@ -11,84 +12,62 @@ require_once '_inc/config.php';
 
 
 class DB{
-
-    /* LocalHost */
-    private $conn;
-    /* 25.69.87.199 */
-    private $conn1;
-
-
     /* Uzol */
     private $nodeip = "25.69.87.199"; 
-    /* Uzivatel */
-
-    /* Spojenia */
-  
-
-    /* Databaza Localhost */
-    private $dbHost     = "localhost";
-    private $dbUsername = "root";
-    private $dbPassword = "";
-    private $dbName    = "movies";
-
-    /* Zdialena Databaza */
-    private $dbHost1     = "25.69.87.199";
-    private $dbUsername1 = "samuel";
-    private $dbPassword1 = "samko123";
-    private $dbName1     = "movies";
     /*
      * Vráti riadky z databázy na základe podmienok
      */
     public function getRows( $table, $conditions = array()){
-        $config=new config;
-        $config->connect();
+        
+        $config=new config; // vztvorenie objektu triedy config
+        $config->connect(); // zavolanie metody connect na config
         
         $sql = ' SELECT ';
-        $sql .= array_key_exists( "select", $conditions ) ? $conditions[ 'select' ] : '*';
-        $sql .= ' FROM '. $table;
+        $sql .= array_key_exists( "select", $conditions ) ? $conditions[ 'select' ] : '*'; // ak existuje pole select condition tak do stringu prida tieto podmienky inak do stringu prida *
+        $sql .= ' FROM '. $table; // pridanie nazvu tabulky do sql stringu 
         if( array_key_exists( "where", $conditions)){
             $sql .= ' WHERE ';
             $i = 0;
-            foreach( $conditions[ 'where' ] as $key => $value ){
+            foreach( $conditions[ 'where' ] as $key => $value ){ // spracovanie where klauzuly a pridanie do sql stringu 
                 $pre = ($i > 0) ? ' AND ':'';
                 $sql .= $pre.$key." = '".$value."'";
                 $i++;
             }
         }
         
-        if( array_key_exists( "order_by", $conditions )){ // Zoradenie
+        if( array_key_exists( "order_by", $conditions )){ // spracovanie zaroadenia podla pomienky a pridanie do sql stringu 
             $sql .= ' ORDER BY '. $conditions[ 'order_by' ]; 
         }else{
-            $sql .= ' ORDER BY Id DESC '; 
+            $sql .= ' ORDER BY Id DESC ';  // zarodenie podla id
         }
         
-        if( array_key_exists( "start", $conditions) && array_key_exists( "limit", $conditions)){
+        if( array_key_exists( "start", $conditions) && array_key_exists( "limit", $conditions)){  // nastavenie limitu zaznamov but range alebo len max limit 
             $sql .= ' LIMIT '. $conditions[ 'start' ]. ',' . $conditions[ 'limit' ]; 
         }elseif( !array_key_exists( "start", $conditions ) && array_key_exists( "limit", $conditions)){
             $sql .= ' LIMIT '.$conditions[ 'limit' ]; 
         }
         
-        $result = $config->getLink()->query($sql);
+        $result = $config->getLink()->query($sql);  // vykonanie SQL prikazu na lokalnom uzle
         
-        if( array_key_exists( "return_type", $conditions ) && $conditions[ 'return_type' ] != 'all'){
+        if( array_key_exists( "return_type", $conditions ) && $conditions[ 'return_type' ] != 'all'){// vyber poctu podtu riadkov s tabulkz podla podmienky
             switch( $conditions[ 'return_type' ]){
                 case 'count':
-                    $data = $result->num_rows;
+                    $data = $result->num_rows; // vrati pocet riadkov ktore sql prikaz
                     break;
                 case 'single':
-                    $data = $result->fetch_assoc(); // fetch_assoc() -> Načíta výsledný riadok ako asociatívne pole
+                    $data = $result->fetch_assoc(); // fetch_assoc() -> Načíta dalsi riadok ako asociatívne pole
                     break;
                 default:
                     $data = '';
             }
-        }else{
+        }else{// nacitanie vsetkych vratenych  riadkov do pola data
             if( $result->num_rows > 0 ){
                 while( $row = $result->fetch_assoc() ){
                     $data[] = $row;
                 }
             }
         }
-        return !empty( $data ) ? $data:false;
+        return !empty( $data ) ? $data:false; 
     }
     
     /*
@@ -102,20 +81,20 @@ class DB{
             $columns = '';
             $values  = '';
             $i = 0;
-            if($table=="movies"){
+            if($table=="movies"){// ak v asociativnom poli data  neexistuju dane key nastav ich hodnoty funkcie date a privatnej premmenej nodeip 
             if( !array_key_exists( 'When_Created', $data )){ // array_key_exists() -> Skontroluje ci dany kluc alebo index existuje v poli 
                 $data[ 'When_Created' ] = date( "Y-m-d H:i:s" ); // data() -> Formatovanie casu 
             }
             if( !array_key_exists ('When_Modify', $data)){
                 $data[ 'When_Modify' ] = date( "Y-m-d H:i:s" );
             }
-            if( !array_key_exists( 'Node', $data)) { 
-                $data['Node'] = $this->nodeip;
+            if( !array_key_exists( 'Node_Created', $data)) { 
+                $data['Node_Created'] = $this->nodeip;  
             }
         }
             
 
-            foreach( $data as $key=>$val ){
+            foreach( $data as $key=>$val ){ // rozdenenie pola data na colums a values. pridadie ciarok medzi values colums a preskocenei specialnzch charekterov  pre jednotlive values
                 $pre = ( $i > 0 ) ? ', ':'';
                 $columns .= $pre.$key; // .= -> zretazenie
                 $values  .= $pre. "'" . $config->getLink()->real_escape_string( $val ). "'"; // real_escape_string() -> specialne znaky v retazci pre pouzitie v SQL
@@ -124,13 +103,13 @@ class DB{
             }
             $query = "INSERT INTO ". $table ." (".$columns.") VALUES (". $values .")";
             //var_dump($query);
-            foreach( $config->getAviableconnection() as $value )
+            foreach( $config->getAviableconnection() as $value ) // vykonie sql prikazu na pripojenych uzloch
             {
 
-                $insert =  $value->query( $query );   
+                $insert =  $value->query( $query );    
         
             }
-            if ( !empty( $config->getNotaviableconnection() )){
+            if ( !empty( $config->getNotaviableconnection() )){ // pre nepripojene uzly zapisanie ip adresy nepripojeneho uzla a  sql prikazu do textoveho suboru 
 
                 $myfile = fopen( "notaviablenodes.txt", "a+" ) or die( "Unable to open file!" ); // fopen() -> Otvori subor alebo URL
             
@@ -141,7 +120,7 @@ class DB{
 
             }
         
-            return $insert?$config->getLink()->insert_id:false;
+            return $insert?$config->getLink()->insert_id:false; // vrati id pridaneho zaznamu na localhoste pretoze ten musi fungovat vzdy
             
         }else{
             return false;
@@ -164,13 +143,9 @@ class DB{
             if( !array_key_exists( 'When_Modify', $data )){
                 $data[ 'When_Modify' ] = date( "Y-m-d H:i:s" );
             }
-            if( !array_key_exists( 'Node', $data )){
-                $data[ 'Node' ] = $this->nodeip;
+            if( !array_key_exists( 'Node_Update', $data )){
+                $data[ 'Node_Update' ] = $this->nodeip;
             }
-           
-
-        
-
             foreach( $data as $key=>$val ){
 
                 $pre = ( $i > 0 ) ?', ':'';
@@ -186,7 +161,7 @@ class DB{
                     $i++;
                 }
             }
-            $query = "UPDATE ". $table ." SET ".$colvalSet.$whereSql;
+            $query = "UPDATE ". $table ." SET ".$colvalSet.$whereSql; // 
             foreach($config->getAviableconnection() as $this->value)
             {
                 $update =  $this->value->query( $query );   

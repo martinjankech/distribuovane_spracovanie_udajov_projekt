@@ -16,39 +16,45 @@ define('DB_USERNAME1', 'velkykomp');
 define('DB_PASSWORD1', '123');
 define('DB_NAME1', 'movies');
 
+define('DB_SERVER2', '25.42.132.140');
+define('DB_USERNAME2', 'velkykomp');
+define('DB_PASSWORD2', '123');
+define('DB_NAME2', 'movies');
+
+define('DB_SERVER3', '25.19.51.14');
+define('DB_USERNAME3', 'velkykomp');
+define('DB_PASSWORD3', '123');
+define('DB_NAME3', 'movies');
+
+
+
 
 class config{
 
 private $link;
 private $link1;
+private $link2;
+private $link3;
 private $aviableconnection=[];
- private $notaviableconnection=[];
-
-/* Pripojenie 
-todo urobiť aby sa údaje odosielaly aj na druhú IP
-
-*/
-
-
-/* Prepojenie User */
-
-
-
-/* Kontrola pripojenia */
+private $notaviableconnection=[];
 
 public function connect(){
 
     $this->link = connectToDBS( DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME );
     $this->link1 = connectToDBS( DB_SERVER1, DB_USERNAME1, DB_PASSWORD1, DB_NAME1 );
+    $this->link2 = connectToDBS( DB_SERVER2, DB_USERNAME2, DB_PASSWORD2, DB_NAME2 );
+    $this->link3 = connectToDBS( DB_SERVER3, DB_USERNAME3, DB_PASSWORD3, DB_NAME3 );
 
     $connection = [
 
         'conn'  => $this->link,
-        'conn1' => $this->link1
+        'conn1' => $this->link1,
+        'conn2' => $this->link2,
+        'conn3' => $this->link3
         
     ];
 
-    foreach( $connection as $value ){
+    foreach( $connection as $value ){// ak funkcie connect DBS vrati objekt mysqli tak vloz value do pola aviableconnection ak vrati string tak vloz value do Notaviableconneaction
 
         if( $value instanceof mysqli ){  // instancof -> ci premenna v PHP je instanciovany objek urcitej triedy / mysqli -> predstavuje prepojenie medzi PHP a MySQL
 
@@ -75,27 +81,19 @@ public function synchronize(){
 
         for ( $i=0; $i < sizeof( $lines ); $i++ ){ // sizeof() -> vrati pocet prvkov v poli 
                 /* Oddeli ip od sql prikazu */
-            $boderOfIP = strpos( $lines[$i] , ":" ); // strpos() -> najde polohu prveho vyskytu podretazca v retazci 
-            $ip = substr( $lines[$i] , 0 , $boderOfIP ); //substr() -> vrati cast retazca 
-            $sqlcommand = substr( $lines[$i] , $boderOfIP + 1 ); 
+            $boderOfIP = strpos( $lines[$i] , ":" ); // strpos() -> najde polohu prveho vyskytu podretazca v retazci hranica medzi ip a sql prikazom
+            $ip = substr( $lines[$i] , 0 , $boderOfIP ); //substr() -> vrati ip 
+            $sqlcommand = substr( $lines[$i] , $boderOfIP + 1 ); // vrati sql command 
     
                 /* Pokusy sa pripojit na databazu ktorej ip nasiel v textovom subore */
             $db = connectToDBS( $ip, DB_USERNAME1, DB_PASSWORD1, DB_NAME1 );
-                /* Ak je objekt mzsqly pripojenie bolo uspesne  a vykona mysqli prikaz na danaj databaze */
+                /* Ak je objekt mysqly pripojenie bolo uspesne  a vykona mysqli prikaz na danaj databaze */
                 if( $db instanceof mysqli ){
                 
                     $db->query( $sqlcommand );
-                    //echo "uzol ".$ip." bol synchronizovany s ostatnymi uzlami".PHP_EOL;
-                    // echo'<div class="alert alert-success" role="alert">
-                    //         uzol '. $ip .' bol synchronizovany s ostatnymi uzlami !
-                    //     </div>';
                     array_push( $deletedrows, $i );
                     array_push($updateid, $ip);
                 
-                }else{
-                
-                    //echo "synchronize with".$ip. "was not sucessful".PHP_EOL;
-
                 }
         }
         /* Zmaze vsetky riadky v poli ktore boli vykonane */

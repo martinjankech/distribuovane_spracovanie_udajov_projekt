@@ -16,7 +16,7 @@ $username_err = $password_err = $confirm_password_err = "";
 
 /*Spracovanie udajov z formulara pri odoslani */
 
-//if($_SERVER["REQUEST_METHOD"] == "POST"){ // $_Server -> Informacie o servery REQUEST_METHOD-> ktora metoda bola pouzita v nasom pripade metoda POST 
+
     if(isset($_POST[ "submit_reg" ]) ){
  
     /* Overenie pouzivatelskeho mena  */
@@ -54,8 +54,7 @@ $username_err = $password_err = $confirm_password_err = "";
                 echo "Oops! Niečo sa pokazilo, skúste to neskôr pri logine.";
             }
 
-            // Zatvorenie  vyhlásenia 
-            // mysqli_stmt_close( $stmt );
+        
         }
     }
     
@@ -104,42 +103,7 @@ $username_err = $password_err = $confirm_password_err = "";
                 echo "Oops! Niečo sa pokazilo, skúste to znova register.";
             }
         }
-    //  /* Kontrola vstupnych chyb*/
-    //  if( empty( $username_err ) && empty( $password_err ) or empty( $confirm_password_err )){
-        
-        
-    //     /* Priprava vyhlásenia  */
-    //     $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-        
-    //     if( ($stmt = mysqli_prepare( $config->getLink(), $sql )) && ($stmt1 = mysqli_prepare( $config->getLink1(), $sql)) ){
-        
-    //         mysqli_stmt_bind_param( $stmt, "ss", $param_username, $param_password );
-    //         mysqli_stmt_bind_param( $stmt1, "ss", $param_username, $param_password );
-            
 
-            
-    //         $param_username = $username;
-    //         $param_password = password_hash( $password, PASSWORD_DEFAULT ); // Vytvorí hash hesla 
-            
-    //         if( mysqli_stmt_execute( $stmt ) && mysqli_stmt_execute( $stmt1 )){
-    //             /* Presmerovanie na prihlasovaciu stránku */
-    //             echo'<div class="alert alert-success" role="alert">
-    //                 Používateľ '. $username .' bol úspešne zaregistrovaný :)
-    //                 </div>';
-                
-    //         } else{
-    //             echo "Oops! Niečo sa pokazilo, skúste to znova.";
-    //         }
-
-            
-    //         mysqli_stmt_close( $stmt );
-    //         mysqli_stmt_close( $stmt1 );
-            
-    //     }
-    // }
-    
-    /* Zatvorenie spojenia */
-    //mysqli_close( $config->getLink());
 }
 
 

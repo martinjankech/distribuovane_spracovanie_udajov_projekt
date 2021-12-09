@@ -32,30 +32,30 @@
 <?php 
 if(( !empty( $username_err )) )
 echo '<div class="alert alert-danger" role="alert">
-Toto uživateľské meno je už obsadené.
+'.$username_err.'
     </div>';
    
     if(( !empty( $password_err )) )
 echo '<div class="alert alert-danger" role="alert">
-Heslo musí mať aspoň 6 znakov.
+'.$password_err.'
     </div>';
 
     if(( !empty( $confirm_password_err )) )
 echo '<div class="alert alert-danger" role="alert">
-Heslo sa nezhoduje.
+'.$confirm_password_err.'
     </div>';
 
     if(( !empty( $login_err)) )
 echo '<div class="alert alert-danger" role="alert">
-"Nesprávne uživateľské meno alebo heslo."
+'.$login_err.'
     </div>';
     if(( !empty( $username_err_log)) )
 echo '<div class="alert alert-danger" role="alert">
-"Zadajte použivateľské meno."
+'.$username_err_log.'
     </div>';
     if(( !empty( $password_err_log)) )
 echo '<div class="alert alert-danger" role="alert">
-"Zadajte Heslo."
+'.$password_err_log.'
     </div>';
     if( !empty( $config->getNotaviableconnection() )){
 
@@ -168,7 +168,7 @@ echo '<div class="alert alert-danger" role="alert">
 
 <!-- Modal register -->
 <div class="modal fade float-right" id="register" tabindex="-1" role="dialog" aria-labelledby="registerLabel"  
-    aria-hidden="true" data-backdrop="static" data-keyboard="false" >
+    aria-hidden="true"  data-keyboard="false" >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <!-- Modal head -->
@@ -215,12 +215,7 @@ echo '<div class="alert alert-danger" role="alert">
     </div>
 </div>
 
-<!-- <script src="./assets/js//script.js"></script> -->
-<!-- <script>
-     function openpopup() {
-            $("#register").modal('show');
-        }
-</script> -->
+
 
 </body>
 

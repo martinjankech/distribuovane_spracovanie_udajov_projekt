@@ -1,0 +1,20 @@
+testovacie scenare 
+A skupina vsetky uzly su pripojene 
+1. martin prida delete update z localhost hotovo
+2. samo prida delete update z localhost  hotovo tu bol dajaky error 
+3. martin prida delete update z ostatnych uzlov hotovo
+4. samo prida delete update z ostatnych uzlov hotovo
+
+B skupina 
+
+martin odpoji localhost a vykonaj A skupinu hotovo
+samo odpoji localhost a vykonaj A skupinu hotovo
+martin odpoji ostatne uzly a vykonaj A skupinu hotovo 
+
+
+skupina c
+to iste co v A a B ale na registry a login hotovo
+
+
+kontroluj ci sa zapisuje do pomocneho filu 
+po obnoveni spojenia si nastane synchronizacia

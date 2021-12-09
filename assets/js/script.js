@@ -1,4 +1,5 @@
-function getMovies() { // Ajax -> čo znamená, že dokáže komunikovať so serverom, vymieňať si údaje a aktualizovať stránku bez toho, aby ste ju museli obnovovať.
+// Ajax -> čo znamená, že dokáže komunikovať so serverom, vymieňať si údaje a aktualizovať stránku bez toho, aby ste ju museli obnovovať.
+function getMovies() { 
   $.ajax({
       type: 'POST',
       url: 'movieAction.php',
@@ -9,7 +10,7 @@ function getMovies() { // Ajax -> čo znamená, že dokáže komunikovať so ser
   });
 }
 
-/* Posle poziadavky na strane servera */
+/* Posle data na stranu servera bez toho aby sme museli refreshovat stranku */
 function movieAction( type, id ) {
   id = (typeof id == "undefined") ? '' : id;
   var movieData = '',
@@ -71,7 +72,7 @@ function editMovie( id )  {
   });
 }
 
-// Akcie na modálnej show a skrytých udalostiach
+// Akcie na modálnej show a skrytých udalostiach - zisti aku akciu vykonavame v modalnom okne a zavola funckiu movie action podla toho 
 $(function() {
   $( '#modalUserAddEdit' ).on( 'show.bs.modal', function(e) {
       var type = $(e.relatedTarget).attr('data-type');

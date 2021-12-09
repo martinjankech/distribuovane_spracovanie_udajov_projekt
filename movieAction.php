@@ -42,8 +42,8 @@ if( !empty( $_POST[ 'action_type' ] )){
                 echo '<td>'. $row[ 'Main_Actor' ] .'</td>';
                 echo '<td>'. $row[ 'Rating_Imdb' ] .'</td>';
                 echo '<td>'. $row[ 'Added_By_User' ] .'</td>';
-                echo '<td>'. $row[ 'Node' ] .'</td>';
-                if (!empty ($config->getNotaviableconnection()) && in_array($row['Node'], $config->getNotaviableconnection())){
+                echo '<td>'. $row[ 'Node_Created' ] .'</td>';
+                if (!empty ($config->getNotaviableconnection()) && in_array($row['Node_Created'], $config->getNotaviableconnection())){
                     echo '<td><a href="javascript:void(0);" class="btn btn-primary disabled" rowID="'.$row['Id'].'" data-type="edit" data-toggle="modal" data-target="#modalUserAddEdit">Upraviť</a>
                     <a href="javascript:void(0);" class="btn btn-outline-danger disabled" onclick="return confirm(\'Ste si istý že chcete vymazat údaj ?\')?movieAction(\'delete\', \''.$row['Id'].'\'):false;">Odstrániť</a></td>';
                     echo '</tr>';
@@ -86,12 +86,6 @@ if( !empty( $_POST[ 'action_type' ] )){
             $verr = 1; 
             $msg .= 'Vložte rating filmu podľa Imdb.<br/>';
         }
-        
-        // if( empty( $node )) { 
-        //     $verr = 1; 
-        //     $msg .= 'Vložte uzol.<br/>';
-        // }
-        
         if( $verr == 0 ){
             // Vlozenie udajov do DB 
             $movieData = array(
@@ -100,14 +94,8 @@ if( !empty( $_POST[ 'action_type' ] )){
                 'Main_Actor' => $main_actor, 
                 'Rating_Imdb' => $rating_imdb,
                 'Added_By_User' => $_SESSION['username']
-                // 'Node' => $node
             );
             $insert = $db->insert($tblName, $movieData);
-
-        
-            //$myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
-            //fwrite($myfile, $insert);
-            //fclose($myfile);
             
             if( $insert ){
                 $status = 1;
