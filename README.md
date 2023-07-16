@@ -1,5 +1,14 @@
 # php_crud_single_page_app
 Projekt na DSD prepojenie 3 vzdialených uzlov 
+# Zadanie projektu
+Cieľom projektu je vytvorenie distribuovaného informačného systému aspoň z 3 uzlov. Každý uzol bude fyzický počítač v konfigurácii servera webového aj databázového. Odporúčaný je Wamp, Xampp, Lamp, ale nie je podmienkou.  
+Uzly sú navzájom prepojené buď priamo cez switch, alebo cez net pomocou VPN napr. Log MeIn Hamachi. 
+Na každom uzle beží tá istá aplikácia (webová aplikácia) a databáza s rovnakou štruktúrou. 
+Transakcia vytvorená na hociktorom uzle sa prejaví na domácom uzle (kde vznikla) a zároveň sa prejaví aj na ostatných uzloch. Takto sa zabezpečí konzistentnosť databáz. Odporúčame používať rovnaký SRBD a rovnaký typ DB, ale nie je to podmienka. Referenčná integrita môže byť porušená len na dobu, kým sa údaje z inicializačného uzla replikujú na ďalšie uzly. Spúšťanie replikácie môže byť automatické (pri vzniku transakcie), alebo manuálne (na stlačenie tlačidla). 
+Minimálna požiadavka na udelenie zápočtu je 20b a sú splnené vyššie opísané kritériá. 
+Na dosiahnutie vyššieho počtu bodov až do 40b je potrebné vyriešiť replikáciu dát po tom ako došlo k výpadku komunikácie medzi uzlami. 
+Pri výpadku každý uzol pracuje autonómne ďalej, ale len tie záznamy môže upravovať,  ktoré vznikli na danom uzle (napr. uzol 1 len záznamy vytvorené uzlom 1). Vytváraním nových Query vznikajú nové  záznamy v tabuľkách. DDB sa dostáva do stavu nekonzistentnosti. Po obnovení spojenia sa replikujú záznamy, ktoré ešte replikované neboli. Automatickým alebo manuálnym spustením. Po replikácii sa nachádzajú v DB na každom uzle rovnaké záznamy a konzistentnosť údajov je obnovená. 
+Max. počet bodov získajú riešenia ktoré sú funkčné, prehľadné a elegantné. 
 # popis projektu 
 V tejto práci sme vytvorili distribuovaný informačný  systém pre pre jednoduchú filmovú databázu. Naša webová aplikácia obsahuje úvodnú stránku, kde sa používateľ musí zaregistrovať. Po úspešnej registrácii sa môže prihlásiť do svojho účtu, kde si môže prezerať záznamy o filmoch, ako aj nové záznamy pridávať, editovať a zmazať. V práci sme pomocou hamachi prepojili 4 uzly, na ktoré sú dané dáta replikované(automaticky). Taktiež sme zabezpečili automatickú synchronizáciu dát na jednotlivých uzloch a to pomocou pomocného textového súboru, na ktorý sa zapisujú IP adresy a SQL príkazy uzlov, pre ktoré nastala chyba spojenia. Po obnovení spojenia sú záznamy na dané uzly(pri ktorých takto vznikla nekonzistencia) replikované. Po výpadku môže vypadnutý uzol upravovať len tie záznamy, ktoré boli ním vytvorené a taktiež ostatné uzly nemôžu upravovať záznamy vypadnutého uzla. V priebehu prace si naše riešenie podrobnejšie popíšeme. 
 # databaza 
